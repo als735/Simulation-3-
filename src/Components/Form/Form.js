@@ -1,5 +1,6 @@
 import React, {Component} from 'react'; 
 import './Form.css'; 
+import Nav from '../Nav/Nav';
 
 class Form extends Component {
     render(){
@@ -7,6 +8,8 @@ class Form extends Component {
         return(
             <div className='form'>
                 Form  
+                {this.props.location.pathname !== '/' ? <Nav/> : ' '}
+
             </div>
         )
     }

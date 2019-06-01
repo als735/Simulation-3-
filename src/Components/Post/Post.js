@@ -1,5 +1,7 @@
 import React, {Component} from 'react'; 
 import './Post.css'; 
+import Nav from '../Nav/Nav';
+
 
 class Post extends Component {
     render(){
@@ -7,8 +9,9 @@ class Post extends Component {
         return(
             <div className='post'>
                 Post  
+                {this.props.location.pathname !== '/' ? <Nav/> : ' '}
             </div>
-        )
+        ) 
     }
 }
 

@@ -1,25 +1,22 @@
 import React, {Component} from 'react'; 
-import axios from 'axios'; 
+import { BrowserRouter as Router} from "react-router-dom";
+// import axios from 'axios'; 
 import './App.css';
-import Form from './Components/Form/Form';
-import Dashboard from './Components/Dashboard/Dashboard';
-import Auth from './Components/Auth/Auth';
-import Nav from './Components/Nav/Nav';
-import Post from './Components/Post/Post';
+import Routes from './Routes'; 
 
 
-
-
-function App() {
+class App extends Component {
+ 
+  render() {
   return (
-    <div className="App">
-      <Auth/>
-      <Dashboard/>
-      <Form/>
-      <Nav/>
-      <Post/>
-    </div>
-  );
-}
+    <Router>
+      <div className="App">  
+        {Routes}
+      </div>
+    </Router>
+    );
+  } 
+} 
+
 
 export default App;
