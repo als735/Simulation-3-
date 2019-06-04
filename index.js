@@ -4,18 +4,19 @@ const massive = require('massive');
 const axios = require('axios');  
 const controller = require("./server/controller");
 const session = require("express-session");
+const bcrypt = require('bcrypt');
+
 
 
 const app = express(); 
-let { SERVER_PORT, SESSION_SECRET } = process.env;
+let { SERVER_PORT} = process.env;
 
 // app.use(express.cookieParser(SESSION_SECRET));
 // app.use(express.session());
 
 app.use(express.json());
-app.use(
-  session({
-    secret: SESSION_SECRET,
+app.use(session({
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false
   })
@@ -30,38 +31,54 @@ massive(process.env.CONNECTION_STRING)
 
 // Endpoints 
 
+
 //Endpoint for users to sign up and create an account 
 app.post('/auth/signup', async (req, res) => {
-  let {username, password} = req.body;  
+  let {email, password} = req.body;  
   let db = req.app.get('db') 
-  let userFound = await db.check_user_exists([username]);  
-  if (userFound[0]) {
-    return res.status(200).send('username already exists')  
+  let userFound = await db.check_user_exists([email]);  
+  if (userFound.length > 0) {
+    return res.status(200).send('email already exists')  
   } 
   let salt = bcrypt.genSaltSync(10); 
   let hash = bcrypt.hashSync(password, salt); 
-  let createdUser = await db.create_customer([username, hash]) 
-  req.session.user = {id: createdUser[0].id, username: createdUser[0].username}
+  let createdUser = await db.create_user([email, hash]) 
+  req.session.user = {id: createdUser[0].id, email: createdUser[0].email}
   res.status(200).send(req.session.user) 
 }); 
 
 //Endpoint for checking if correct username and password has entered 
 
 app.post('/auth/login', async (req, res) => {
-  let {username, password} = req.body;
+  let {email, password} = req.body;
   let db = req.app.get('db')
-  let userFound = await db.check_user_exists(username) 
+  let userFound = await db.check_user_exists(email) 
   if (!userFound[0]) { 
-    return res.status(200).send('Incorrect username. Please try again.'); 
+    return res.status(200).send('Incorrect email. Please try again.'); 
   }
   let result = bcrypt.compareSync(password, userFound[0].user_password)
   if (result) { 
-    req.session.user = {id: userFound[0].id, username: userFound[0].username}
+    req.session.user = {id: userFound[0].id, email: userFound[0].email}
     res.status(200).send(req.session.user) 
   } else {
-    return res.status(401).send('Incorrect username/password') 
+    return res.status(401).send('Incorrect email/password') 
   }
 }); 
+
+// //endpoint for logging out 
+// app.get('/auth/logout', (req, res) => {
+//   req.session.destroy();
+//   res.sendStatus(200);
+// }); // destroys the users session and sends a status of 200 
+
+// // endpoint to check if the user is logged in and pull their info up if they are  
+// app.get('/auth/user', (req, res) => {
+//   if (req.session.user) {  // is there a user on session? 
+//     res.status(200).send(req.session.user) // if there is send it up 
+//   } else {
+//     res.status(401).send('please log in') //if not send an error 
+//   }
+// });
 
 const port = process.env.port || 4000;
 app.listen(SERVER_PORT, () => {   

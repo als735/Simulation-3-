@@ -9,30 +9,38 @@ class Auth extends Component {
         super(props); 
         
         this.state = {
-            username :'',
+            email :'',
             password : '',
             loggedInUser: {}
         }
     }
 
-    async signup() {
-        let {username, password} = this.state; 
-        let res = await axios.post('/auth/signup', {
-           username,
+    signup = async () => {
+        debugger 
+        let {email, password} = this.state; 
+        let res = await axios.post('/auth/signup', { 
+           email,
            password
           }); 
-        this.setState({loggedInUser: res.data, username: '', password: ''}); 
+        this.setState({loggedInUser: res.data, email: '', password: ''}); 
       } // It makes the post request, sets the returned user on state, and resets the input fields.
+      //await is like a promise, it won't fire next code till the response comes back it will wait for the post to finish and then load it into the res object and send it back.
 
-      async login() {
-        let {username, password} = this.state; 
+    login = async () => { 
+        let {email, password} = this.state; 
         let res = await axios.post('/auth/login', {
-          username, 
+          email, 
           password
-        }); // The body is an object with our username and password from state assigned as properties on the object.
-    
-        this.setState({loggedInUser: res.data, username: '', password: ''}); 
+        }); // The body is an object with our email and password from state assigned as properties on the object.
+        
+        this.setState({loggedInUser: res.data, email: '', password: ''}); 
       } // When the response comes back, we set the returned user on state and reset the username and password fields.
+    
+    //   logout() {
+    //     axios.get('/auth/logout');
+    //     this.setState({ loggedInUser: {} });
+    //   } //logout functionality sets the loggedInUser on state back to an empty object 
+    
 
     handleInputChange= (e) => {
         const target = e.target; 
@@ -54,7 +62,7 @@ class Auth extends Component {
                     <div>
                         <label htmlFor="">
                         Username: 
-                        <input type="text" value={this.state.username} name='username' onChange={this.handleInputChange}/>
+                        <input type="text" value={this.state.email} name='email' onChange={this.handleInputChange}/>
                         </label>
                     </div>
                     <div>
@@ -63,8 +71,8 @@ class Auth extends Component {
                         <input type="text" value={this.state.password} name='password' onChange={this.handleInputChange}/>                        </label>
                         </div>
                     </div>
-                <button onClick={() => this.login()}>Login</button>
-                <button onClick={() => this.signup()}>Register</button>
+                <button onClick={this.login}>Login</button>
+                <button onClick={this.signup}>Register</button>
                 {this.props.location.pathname !== '/' ? <Nav/> : ' '}
             </div>
         )
