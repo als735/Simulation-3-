@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import './Auth.css'; 
 import axios from 'axios'; 
 import Nav from '../Nav/Nav';
+import { connect } from 'react-redux';
+import { thisUser } from '../../Ducks/reducer'; 
 
 
 class Auth extends Component {
@@ -16,13 +18,20 @@ class Auth extends Component {
     }
 
     signup = async () => {
-        debugger 
+         
         let {email, password} = this.state; 
         let res = await axios.post('/auth/signup', { 
            email,
            password
           }); 
-        this.setState({loggedInUser: res.data, email: '', password: ''}); 
+        const { user_id, username, profile_picture } = res.data[0]
+        this.props.whichUserIsIt(user_id, username, profile_picture);
+        this.setState({
+          loggedInUser: res.data, 
+          email: '', 
+          password: ''
+        });
+        this.props.history.push('/dashboard') 
       } // It makes the post request, sets the returned user on state, and resets the input fields.
       //await is like a promise, it won't fire next code till the response comes back it will wait for the post to finish and then load it into the res object and send it back.
 
@@ -30,11 +39,23 @@ class Auth extends Component {
         let {email, password} = this.state; 
         let res = await axios.post('/auth/login', {
           email, 
-          password
-        }); // The body is an object with our email and password from state assigned as properties on the object.
-        
-        this.setState({loggedInUser: res.data, email: '', password: ''}); 
-      } // When the response comes back, we set the returned user on state and reset the username and password fields.
+          password  // The body is an object with our email and password from state assigned as properties on the object.
+        }); 
+          // .then( res => {
+      //   const { user_id, username, profile_picture } = res.data[0]
+      //   this.props.whichUserIsIt(user_id, username, profile_picture);
+        this.setState({
+          loggedInUser: res.data, 
+          email: '', 
+          password: ''
+        }); 
+        this.props.history.push('/dashboard')
+
+      } 
+      
+    
+      
+      // When the response comes back, we set the returned user on state and reset the username and password fields.
     
     //   logout() {
     //     axios.get('/auth/logout');
@@ -79,4 +100,8 @@ class Auth extends Component {
     }
 }
 
-export default Auth; 
+const mapDispatchToProps = {
+  findThatUser : thisUser 
+}
+
+export default connect(null, mapDispatchToProps)(Auth); 
