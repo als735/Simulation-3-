@@ -1,0 +1,29 @@
+.authie {
+        width: 100%;
+        height: 650px;
+        padding-top: 175px;
+        background: linear-gradient(to right, #FF70A6 0%, #FF9770 33%, #FFD670 66%, #E9FF70 100%);
+        color: white;
+        font-size: 16px;
+        font-family: inherit; 
+}
+
+.authieTitle {
+    font-size: 70px; 
+    margin: auto; 
+}
+
+.authieImage {
+
+}
+
+.authieBox {
+    height: 65vh; 
+    width: 60vh; 
+    background: linear-gradient(to right, #ff7d6d 0%, #ffd270 100%);
+    margin: auto;
+    padding: 20px; 
+}
+
+
+

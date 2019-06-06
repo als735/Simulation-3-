@@ -40,11 +40,13 @@ app.post('/auth/signup', async (req, res) => {
   if (userFound.length > 0) {
     return res.status(200).send('email already exists')  
   } 
+  let profPic = `https://robohash.org/${email}`;  
   let salt = bcrypt.genSaltSync(10); 
   let hash = bcrypt.hashSync(password, salt); 
-  let createdUser = await db.create_user([email, hash]) 
-  req.session.user = {id: createdUser[0].id, email: createdUser[0].email}
-  res.status(200).send(req.session.user) 
+  let createdUser = await db.create_user([email, hash, profPic]) 
+  delete createdUser[0].user_password 
+  req.session.user = createdUser[0] 
+  res.status(200).send(createdUser[0]) 
 }); 
 
 //Endpoint for checking if correct username and password has entered 
@@ -58,8 +60,9 @@ app.post('/auth/login', async (req, res) => {
   }
   let result = bcrypt.compareSync(password, userFound[0].user_password)
   if (result) { 
-    req.session.user = {id: userFound[0].id, email: userFound[0].email}
-    res.status(200).send(req.session.user) 
+    delete userFound[0].user_password 
+    req.session.user = userFound[0] 
+    res.status(200).send(userFound[0]) 
   } else {
     return res.status(401).send('Incorrect email/password') 
   }

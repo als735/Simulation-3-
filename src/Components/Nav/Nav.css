@@ -1,0 +1,10 @@
+.profPic {
+    width: 70px;
+    height: 70px;
+    background-color: #fff;
+    background-position: 50%;
+    background-size: cover;
+    border-radius: 50%;
+    -webkit-box-shadow: 0 0 20px #333;
+    box-shadow: 0 0 20px #333;
+}
