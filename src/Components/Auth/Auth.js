@@ -9,7 +9,7 @@ import { FIND_USER } from '../../Ducks/reducer';
 class Auth extends Component {
     constructor(props){
         super(props); 
-        
+         
         this.state = {
             email :'',
             password : '',
@@ -23,8 +23,12 @@ class Auth extends Component {
         let res = await axios.post('/auth/signup', { 
            email,
            password
-          }); 
-        this.setState({loggedInUser: res.data, email: '', password: ''});
+          })
+          this.props.dispatch({
+            type: FIND_USER,
+            payload: res.data 
+          })  
+        // this.setState({loggedInUser: res.data, email: '', password: ''});
         this.props.history.push('/dashboard') 
       } // It makes the post request, sets the returned user on state, and resets the input fields.
       //await is like a promise, it won't fire next code till the response comes back it will wait for the post to finish and then load it into the res object and send it back.
@@ -95,7 +99,7 @@ class Auth extends Component {
             </div>
         )
     }
-}
+} 
 
 // const mapDispatchToProps = {
 //   findThatUser : FIND_USER 

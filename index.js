@@ -31,6 +31,13 @@ massive(process.env.CONNECTION_STRING)
 
 // Endpoints 
 
+app.get('/posts/all', controller.retrieveAllPosts);
+// app.get('/posts/:postId', controller.retrieveSinglePost);
+// app.post('/posts/create', controller.createAPost);
+
+
+
+
 
 //Endpoint for users to sign up and create an account 
 app.post('/auth/signup', async (req, res) => {
