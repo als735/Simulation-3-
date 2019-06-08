@@ -9,29 +9,29 @@ class Nav extends Component {
     render(){
 console.log(this.props, 'navie')
         const profPic = {
-            yourFace : `url(${this.props.payload.profile_picture})`
+            yourFace : `url(${this.props.user.profile_picture})`
         }
          
         return(
             <div className='navBar'> 
                 <div className='userInfo'>
                     <div className='profPic' style={{backgroundImage: profPic.yourFace}}></div>
-                    <div className='listingUser'>{this.props.payload.email}</div>
+                    <div className='listingUser'>{this.props.user.email}</div>
                 </div>
                 <div className="link-wrap">
-                    <div>
+                    <div className = 'navImages'> 
                         <Link to="/dashboard" className="links">
-                            <button> <img className="navieButton" src={navieHome} alt=""/> </button> 
+                             <img className="navieButton" src={navieHome} alt=""/> 
                         </Link>
                     </div>
-                    <div>
-                        <Link to="/post/:postid" className="links"> 
-                            <button><img className="navieButton" src={navieAdd} alt=""/></button>
+                    <div className = 'navImages'>
+                        <Link to="/new" className="links"> 
+                            <img className="navieButton" src={navieAdd} alt=""/>
                         </Link> 
                     </div>
-                    <div>
+                    <div className = 'navImages'>
                         <Link to="/" className="links">
-                            <button><img className="navieButton" src={navieOut} alt=""/></button>
+                            <img className="navieButton bottomButton" src={navieOut} alt=""/>
                         </Link>
                     </div>
                 </div>

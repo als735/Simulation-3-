@@ -32,8 +32,8 @@ massive(process.env.CONNECTION_STRING)
 // Endpoints 
 
 app.get('/api/posts/allPosts', controller.retrieveAllPosts);
-app.get('/api/posts/:postId', controller.retrieveSinglePost);
-app.post('/api/posts/create', controller.createAPost);
+app.get('/api/posts/:postid', controller.retrieveSinglePost);
+// app.post('/api/posts/create', controller.createAPost);
 
 
 

@@ -13,7 +13,7 @@ module.exports = {
                 res.status(500).send(err)
             })
         } else if (userposts === 'false' && search === '') { // If userposts is false AND there is no search string, the endpoint should respond with all the posts where...
-            dbInstance.get_all_posts_not_from_this_user(sqlSearch) //The current user is NOT the author.
+            dbInstance.get_all_posts_not_from_this_user([sqlSearch]) //The current user is NOT the author.
             .then(results => {
                 res.status(200).send(results)
             })
@@ -21,17 +21,17 @@ module.exports = {
                 res.status(500).send(err)
             })
         } else if (userposts === 'false' && search) { // If userposts is false AND there is no search string, the endpoint should respond with all the posts where
-            dbInstance.search_for_posts_not_from_this_user(sqlSearch)
-            .then(res => {
-                res.status(200).send(res) // The current user is NOT the author. The title contains the search string.
+            dbInstance.search_for_posts_not_from_this_user([sqlSearch])
+            .then(results => {
+                res.status(200).send(results) // The current user is NOT the author. The title contains the search string.
             })
             .catch (err => {
                 res.status(500).send(err)
             })
         } else if (userposts === 'true' && search === '') { // If userposts is true AND there is no search string, the endpoint should respond with all the posts.
-            dbInstance.get_all_posts(sqlSearch)
-            .then(res => {
-                res.status(200).send(res)
+            dbInstance.get_all_posts([sqlSearch])
+            .then(results => {
+                res.status(200).send(results)
             })
             .catch (err => {
                 res.status(500).send(err)
@@ -40,10 +40,10 @@ module.exports = {
     },  
     retrieveSinglePost: (req, res, next) => {
         const dbInstance = req.app.get('db');
-        const {postID} = req.params; 
-        dbInstance.view_post([postID])
-        .then (res => {
-            res.status(200).send(res)
+        const {postid} = req.params; 
+        dbInstance.view_post([postid])
+        .then (results => {
+            res.status(200).send(results)
         })
         .catch(err => {
             res.status(500).send(err)

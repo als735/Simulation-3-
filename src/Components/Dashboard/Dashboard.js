@@ -4,7 +4,7 @@ import Nav from '../Nav/Nav';
 import Post from './../Post/Post'; 
 import { connect } from 'react-redux';
 import axios from 'axios';
-import { FIND_USER } from '../../Ducks/reducer'; 
+// import { FIND_USER } from '../../Ducks/reducer'; 
 
  
 
@@ -21,21 +21,16 @@ class Dashboard extends Component {
     }
 
 componentDidMount = async () => {
-    await this.getPostings(); 
+    // await this.getPostings(); 
 }
 
-getPostings = async () => { // sends an axios request to the endpoint 
+// http://localhost:4000/api/posts/allPosts?userposts=true&search=Toast
+getPostings = async () => { // sends an axios request to the endpoint  
     // let {id} = this.state; 
-    let res = await axios.get(`/api/posts/allPosts?submissions=${this.state.checkBox}&search=${this.state.searchBox}`) 
-        this.props.dispatch({
-            type: FIND_USER,
-            payload: res.data 
-          }) 
-          .then( res => {
+    let res = await axios.get(`/api/posts/allPosts?userposts=${this.state.checkBox}&search=${this.state.searchBox}`) 
             this.setState({
                 listOfPosts: res.data
             })
-   })
 }  // No matter the combination of queries, the request should send the user id from Redux state as a parameter. ? how is this done 
 
 resetSearch = async () => { // reseting the search when the getpostings is hit ? 
@@ -43,11 +38,7 @@ resetSearch = async () => { // reseting the search when the getpostings is hit ?
             searchBox : '', 
             checkBox : true
         })
-    this.getPostings(); 
 } 
-
-
-
 
 handleInputChange= (e) => {
     const target = e.target; 
@@ -59,22 +50,26 @@ handleInputChange= (e) => {
   }
     render(){
         const posts = this.state.listOfPosts.map( (e, i) => {
-            return <Post key={i} index={i} postId={e.postId} title={e.title} email={e.email} profile_picture={e.profile_picture}/> // 
+            return <Post key={i} index={i} post_id={e.post_id} post_title={e.post_title} email={e.email} post_content={e.post_content} profile_picture={e.profile_picture} post_image={e.post_image}/> // 
         })
          
         return(
             <div className='dashboard'>  
-            {this.props.location.pathname !== '/' ? <Nav/> : ' '}
-            <div>
-                <input name='searchBox' value={this.state.searchBox} onChange={this.handleInputChange} type="text" placeholder='Search by Title' className='searchBox'/>
-                <button onClick={this.getPostings}><img className="searchButton" src={searchIcon} alt=""/></button>
-                <button onClick={this.resetSearch} className='resetButton'>Reset</button>
-            </div>
-            <div>
-                <label htmlFor="posts">My Posts:</label>
-                <input name='checkBox'type="checkbox" checked={this.state.checkBox} onChange={this.handleInputChange}/>
-            </div>
-            {posts}
+                    {this.props.location.pathname !== '/' ? <Nav/> : ' '}
+                <div className='mainSearchBox'>
+                    <div className='searchButtonsBox'>
+                        <input name='searchBox' value={this.state.searchBox} onChange={this.handleInputChange} type="text" placeholder='Search by Title' className='searchBox'/>
+                        <button onClick={this.getPostings}><img className="searchButton" src={searchIcon} alt=""/></button>
+                        <button onClick={this.resetSearch} className='resetButton'>Reset</button>
+                    </div>
+                    <div className='checkBoxDiv'>
+                        <label htmlFor="posts">My Posts:</label>
+                        <input name='checkBox'type="checkbox" checked={this.state.checkBox} onChange={this.handleInputChange}/>
+                    </div>
+                </div>
+                <div className='postsComp'>
+                    {posts}
+                </div>
             </div>
         )
     }
