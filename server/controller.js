@@ -5,17 +5,17 @@ module.exports = {
         const sqlSearch = '%' + search + '%' // makes it so the app will search the database for post titles with the search string anywhere in there
         const dbInstance = req.app.get('db'); // accessing the database 
         if (userposts === 'true' && search) { // If userposts is true AND there is a search string, the endpoint should respond with all the posts where
-            dbInstance.search_posts(sqlSearch)
-            .then( res => {
-                res.status(200).send(res) //respond with all titles that contain the search string 
+            dbInstance.search_posts([sqlSearch])
+            .then( results => {
+                res.status(200).send(results) //respond with all titles that contain the search string 
             })
             .catch (err => {
                 res.status(500).send(err)
             })
         } else if (userposts === 'false' && search === '') { // If userposts is false AND there is no search string, the endpoint should respond with all the posts where...
             dbInstance.get_all_posts_not_from_this_user(sqlSearch) //The current user is NOT the author.
-            .then(res => {
-                res.status(200).send(res)
+            .then(results => {
+                res.status(200).send(results)
             })
             .catch (err => {
                 res.status(500).send(err)
@@ -39,9 +39,23 @@ module.exports = {
         }
     },  
     retrieveSinglePost: (req, res, next) => {
+        const dbInstance = req.app.get('db');
+        const {postID} = req.params; 
+        dbInstance.view_post([postID])
+        .then (res => {
+            res.status(200).send(res)
+        })
+        .catch(err => {
+            res.status(500).send(err)
+        })
 
     }, 
-
     createAPost: (req, res, next) => {
+        const { post_title, post_image, post_content } = req.body;
+        const dbInstance = req.app.get('db');
+        dbInstance.create_post([post_title, post_image, post_content])
+        .then( () =>{
+            res.status(200).send('Adding new post')
+        })
     }
 }

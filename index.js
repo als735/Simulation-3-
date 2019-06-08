@@ -27,13 +27,13 @@ massive(process.env.CONNECTION_STRING)
         app.set('db', dbInstance)
         console.log('the db is connected')
     })
-    .catch(err => console.log('err in db')); 
+    .catch(err => console.log('err in db'));  
 
 // Endpoints 
 
-app.get('/posts/all', controller.retrieveAllPosts);
-// app.get('/posts/:postId', controller.retrieveSinglePost);
-// app.post('/posts/create', controller.createAPost);
+app.get('/api/posts/allPosts', controller.retrieveAllPosts);
+app.get('/api/posts/:postId', controller.retrieveSinglePost);
+app.post('/api/posts/create', controller.createAPost);
 
 
 

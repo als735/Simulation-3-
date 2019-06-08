@@ -28,7 +28,6 @@ class Auth extends Component {
             type: FIND_USER,
             payload: res.data 
           })  
-        // this.setState({loggedInUser: res.data, email: '', password: ''});
         this.props.history.push('/dashboard') 
       } // It makes the post request, sets the returned user on state, and resets the input fields.
       //await is like a promise, it won't fire next code till the response comes back it will wait for the post to finish and then load it into the res object and send it back.
