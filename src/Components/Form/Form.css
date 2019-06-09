@@ -1,0 +1,77 @@
+.form {
+    padding-left: 100px;
+}
+
+.newFormBox {
+    border-radius: 2px;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.2);
+    width: 70%;
+    margin: 0 auto;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.newPostTitle {
+    font-size: 40px;
+    font-weight: 700;
+    color: #ff9770;
+    margin: 0 0 10px;
+    text-align: left; 
+}
+
+.formImage {
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.2);
+    width: 275px;
+    margin-left: 20px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.inputFields {
+    margin: 0 auto;
+}
+
+.cont {
+    width: 100%;
+    display: block;
+    margin: 0 auto;
+}
+
+.title {
+    margin-bottom: 5px;
+    text-align: left; 
+    font-weight: 900; 
+}
+
+.inputNewForm {
+    width: 95%; 
+    margin: auto;
+}
+
+.contentContainer {
+    width: 45%;
+    margin: auto; 
+    height: 250px;
+    float: left; 
+    padding-left: 60px; 
+}
+
+.buttonPlacement {
+    display: flex;
+    justify-content: space-between;
+}
+
+.postButton {
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.2);
+    border-radius: 1px;
+    background-image: -webkit-radial-gradient(50% -46%,circle,#737373,#403d39);
+    background-image: -o-radial-gradient(50% -46%,circle,#737373,#403d39);
+    background-image: radial-gradient(circle at 50% -46%,#737373,#403d39);
+    padding: 10px 20px;
+    color: #fff;
+    border: none;
+    margin-top: 5px;
+
+}

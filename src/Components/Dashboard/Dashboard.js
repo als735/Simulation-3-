@@ -59,7 +59,7 @@ handleInputChange= (e) => {
                 <div className='mainSearchBox'>
                     <div className='searchButtonsBox'>
                         <input name='searchBox' value={this.state.searchBox} onChange={this.handleInputChange} type="text" placeholder='Search by Title' className='searchBox'/>
-                        <button onClick={this.getPostings}><img className="searchButton" src={searchIcon} alt=""/></button>
+                        <img className="searchButton" src={searchIcon} onClick={this.getPostings}alt=""/>
                         <button onClick={this.resetSearch} className='resetButton'>Reset</button>
                     </div>
                     <div className='checkBoxDiv'>
