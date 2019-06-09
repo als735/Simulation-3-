@@ -48,14 +48,17 @@ module.exports = {
         .catch(err => {
             res.status(500).send(err)
         })
-
+ 
     }, 
     createAPost: (req, res, next) => {
+        const {session} = req; 
         const { post_title, post_image, post_content } = req.body;
         const dbInstance = req.app.get('db');
-        dbInstance.create_post([post_title, post_image, post_content])
+        dbInstance.create_post([post_title, post_image, post_content, session.userid])
         .then( () =>{
-            res.status(200).send('Adding new post')
-        })
+            res.status(200).send('Adding a new post')
+        }) 
     }
 }
+
+//         // 

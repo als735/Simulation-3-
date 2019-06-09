@@ -1,6 +1,7 @@
 import React, {Component} from 'react'; 
 import './Form.css'; 
 import Nav from '../Nav/Nav';
+import axios from 'axios';
 
 class Form extends Component {
     constructor(props){
@@ -11,8 +12,28 @@ class Form extends Component {
             imageURL: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQy67qKEMJNh_JsKfsEY3BTVbfSzvXi9F0QzwgKxC9fxTzYBEIb',
             content: ''
         }
-
     }
+
+    makePost = () => {
+        debugger 
+        axios.post(`/posts/create`, { title: this.state.title, image: this.state.imageURL, content: this.state.content })
+        .then( results => {
+            this.props.history.push('../Dashboard')
+        })
+    }
+
+    handleInputChange= (e) => {
+        const target = e.target; 
+        const value = target.value; 
+        const name = target.name; 
+
+        this.setState({
+          [name] :value
+        }); 
+        console.log(this.state, 'state')
+
+      }
+
     render(){
          
         return(
@@ -23,20 +44,20 @@ class Form extends Component {
                     <div className='inputFields'>
                         <div className='cont'>
                             <p className='title'>Title:</p>
-                            <input className='inputNewForm' />
+                            <input type='text' name='title' value={this.state.title} onChange={this.handleInputChange}className='inputNewForm'/>
                         </div>
                         <div className='cont'>
                             <p className='title'>Image URL:</p>
-                            <input className='inputNewForm'/>
+                            <input type='text' name='imageURL' value={this.state.imageURL} onChange={this.handleInputChange} className='inputNewForm'/>
                         </div>
                         <div className='cont'>
                             <p className='title'>Content:</p>
-                            <textarea className='contentContainer' rows="10"/>
+                            <textarea name='content' value={this.state.content} onChange={this.handleInputChange} className='contentContainer' rows="10"/>
                             <img className='formImage' src={this.state.imageURL} alt=""/>
                         </div>
                     </div>
                     <div className='buttonPlacement'>
-                        <button className='postButton'>Post</button>
+                        <button className='postButton' onClick={this.makePost}>Post</button>
                     </div>
                 </div>
             </div>

@@ -21,7 +21,7 @@ app.use(session({
     saveUninitialized: false
   })
 );
-
+ 
 massive(process.env.CONNECTION_STRING)
     .then(dbInstance => {
         app.set('db', dbInstance)
@@ -33,7 +33,7 @@ massive(process.env.CONNECTION_STRING)
 
 app.get('/api/posts/allPosts', controller.retrieveAllPosts);
 app.get('/api/posts/:postid', controller.retrieveSinglePost);
-// app.post('/api/posts/create', controller.createAPost);
+app.post('/api/posts/create', controller.createAPost);
 
 
 
