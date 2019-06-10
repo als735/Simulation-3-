@@ -7,11 +7,35 @@ import { FIND_USER } from '../../Ducks/reducer';
 
 
 class Nav extends Component {
-    
 
+//     constructor(props){
+//         super(props);
 
+// }
 
+// componentDidMount(){
+//      this.authMe();
+//  }
 
+authMe = () => {
+   let {email, profile_picture} = this.state; 
+   let res = axios.get('/api/auth/me', {
+       email,
+       profile_picture
+   })
+    this.props.dispatch({
+        type: FIND_USER,
+        payload: res.data
+    })
+}
+
+// logout = () => {
+//     let res = axios.post('api/auth/logout')
+//     this.props.dispatch({
+//         type: FIND_USER,
+//         payload: res.data 
+//     })
+// }
 
 
     render(){
@@ -24,7 +48,7 @@ console.log(this.props, 'navie')
             <div className='navBar'> 
                 <div className='userInfo'>
                     <div className='profPic' style={{backgroundImage: profPic.yourFace}}></div>
-                    <div className='listingUser'>{this.props.user.email}</div>
+                    <div className='listingUser' onClick={this.authMe}>{this.props.user.email}</div>
                 </div>
                 <div className="link-wrap">
                     <div className = 'navImages'> 

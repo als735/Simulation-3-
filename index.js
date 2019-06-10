@@ -42,8 +42,6 @@ app.get('/api/auth/me', controller.authMe);
 app.post('/api/auth/logout', controller.logout);
 
 
-
-
 //Endpoint for users to sign up and create an account 
 app.post('/auth/signup', async (req, res) => {
   const { session } = req;
