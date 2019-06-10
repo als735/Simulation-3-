@@ -15,12 +15,16 @@ let { SERVER_PORT} = process.env;
 // app.use(express.session());
 
 app.use(express.json());
+
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: true,
+    cookie: { maxAge: 1200000 }
   })
 );
+
+
  
 massive(process.env.CONNECTION_STRING)
     .then(dbInstance => {
@@ -34,13 +38,15 @@ massive(process.env.CONNECTION_STRING)
 app.get('/api/posts/allPosts', controller.retrieveAllPosts);
 app.get('/api/posts/:postid', controller.retrieveSinglePost);
 app.post('/api/posts/create', controller.createAPost);
-
+app.get('/api/auth/me', controller.authMe);
+app.post('/api/auth/logout', controller.logout);
 
 
 
 
 //Endpoint for users to sign up and create an account 
 app.post('/auth/signup', async (req, res) => {
+  const { session } = req;
   let {email, password} = req.body;  
   let db = req.app.get('db') 
   let userFound = await db.check_user_exists([email]);  
@@ -52,7 +58,7 @@ app.post('/auth/signup', async (req, res) => {
   let hash = bcrypt.hashSync(password, salt); 
   let createdUser = await db.create_user([email, hash, profPic]) 
   delete createdUser[0].user_password 
-  req.session.user = createdUser[0] 
+  req.session.user_id = createdUser[0] 
   res.status(200).send(createdUser[0]) 
 }); 
 
@@ -68,18 +74,23 @@ app.post('/auth/login', async (req, res) => {
   let result = bcrypt.compareSync(password, userFound[0].user_password)
   if (result) { 
     delete userFound[0].user_password 
-    req.session.user = userFound[0] 
+    req.session.user_id = userFound[0] 
     res.status(200).send(userFound[0]) 
   } else {
     return res.status(401).send('Incorrect email/password') 
   }
 }); 
 
-// //endpoint for logging out 
-// app.get('/auth/logout', (req, res) => {
-//   req.session.destroy();
-//   res.sendStatus(200);
-// }); // destroys the users session and sends a status of 200 
+
+
+
+const port = process.env.port || 4000;
+app.listen(SERVER_PORT, () => {   
+    console.log(`Purring on Port ${SERVER_PORT}`); 
+});
+
+
+
 
 // // endpoint to check if the user is logged in and pull their info up if they are  
 // app.get('/auth/user', (req, res) => {
@@ -88,9 +99,8 @@ app.post('/auth/login', async (req, res) => {
 //   } else {
 //     res.status(401).send('please log in') //if not send an error 
 //   }
-// });
-
-const port = process.env.port || 4000;
-app.listen(SERVER_PORT, () => {   
-    console.log(`Purring on Port ${SERVER_PORT}`); 
-});
+// }); // //endpoint for logging out 
+// app.get('/auth/logout', (req, res) => {
+//   req.session.destroy();
+//   res.sendStatus(200);
+// }); // destroys the users session and sends a status of 200 

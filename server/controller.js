@@ -13,7 +13,7 @@ module.exports = {
                 res.status(500).send(err)
             })
         } else if (userposts === 'false' && search === '') { // If userposts is false AND there is no search string, the endpoint should respond with all the posts where...
-            dbInstance.get_all_posts_not_from_this_user([sqlSearch]) //The current user is NOT the author.
+            dbInstance.get_all_posts_not_from_this_user(session.user_id) //The current user is NOT the author.
             .then(results => {
                 res.status(200).send(results)
             })
@@ -21,7 +21,7 @@ module.exports = {
                 res.status(500).send(err)
             })
         } else if (userposts === 'false' && search) { // If userposts is false AND there is no search string, the endpoint should respond with all the posts where
-            dbInstance.search_for_posts_not_from_this_user([sqlSearch])
+            dbInstance.search_for_posts_not_from_this_user([sqlSearch], session.user_id)
             .then(results => {
                 res.status(200).send(results) // The current user is NOT the author. The title contains the search string.
             })
@@ -52,13 +52,24 @@ module.exports = {
     }, 
     createAPost: (req, res, next) => {
         const {session} = req; 
-        const { post_title, post_image, post_content } = req.body;
+        const { post_title, post_image, post_content} = req.body;
         const dbInstance = req.app.get('db');
-        dbInstance.create_post([post_title, post_image, post_content, session.userid])
+        dbInstance.create_post([post_title, post_image, post_content, session.user_id])
         .then( () =>{
             res.status(200).send('Adding a new post')
         }) 
+    },
+    authMe: (req, res, next) => {
+        const { session } = req;
+        const dbInstance = req.app.get('db');
+        dbInstance.get_a_user([session.user_id])
+        .then( results => {
+            res.status(200).send(results)
+        })
+    },
+    logout: (req, res, next) => {
+        req.session.destroy();
     }
 }
 
-//         // 
+

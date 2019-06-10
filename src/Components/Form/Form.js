@@ -18,8 +18,8 @@ class Form extends Component {
         debugger 
         axios.post(`/posts/create`, { title: this.state.title, image: this.state.imageURL, content: this.state.content })
         .then( results => {
-            this.props.history.push('../Dashboard')
         })
+        this.props.history.push('/Dashboard')
     }
 
     handleInputChange= (e) => {
