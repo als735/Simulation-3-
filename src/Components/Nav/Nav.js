@@ -2,12 +2,18 @@ import React, {Component} from 'react';
 import './Nav.css'; 
 import {Link} from "react-router-dom";
 import { connect } from 'react-redux';
-
-
-
+import axios from 'axios'; 
+import { FIND_USER } from '../../Ducks/reducer';
 
 
 class Nav extends Component {
+    
+
+
+
+
+
+
     render(){
 console.log(this.props, 'navie')
         const profPic = {
@@ -48,6 +54,17 @@ console.log(this.props, 'navie')
 // }
 
 export default connect(state => state)(Nav); // call connect connecting the component and making it aware of the applications store or user data and exporting that instead (making it a smart component)
+
+
+
+
+
+// const mapStateToProps = (state) => { // accesses the data in your store and passes it into your component as a property it can pass whatever pieces of the store you want to 
+//     const {username, profilePicture, id} = state; // Take the username and profile picture off of the Redux state.
+//     return {username: username, profile_picture: profilePicture, id: id} // assign the values 
+// }
+
+// export default connect(state => state)(Nav); // call connect connecting the component and making it aware of the applications store or user data and exporting that instead (making it a smart component)
 
 
 
