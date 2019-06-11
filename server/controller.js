@@ -62,10 +62,14 @@ module.exports = {
     authMe: (req, res, next) => {
         const { session } = req;
         const dbInstance = req.app.get('db');
-        dbInstance.get_a_user([session.user_id])
-        .then( results => {
-            res.status(200).send(results)
-        })
+        if (session.user_id){
+            dbInstance.users.findOne({user_id : session.user_id.user_id}) 
+            .then( results => {
+                res.status(200).send(results)
+            })
+        } else {
+            res.send(false)
+        }
     },
     logout: (req, res, next) => {
         req.session.destroy();

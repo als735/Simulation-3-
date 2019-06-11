@@ -16,7 +16,7 @@ class Form extends Component {
 
     makePost = () => {
         debugger 
-        axios.post(`/posts/create`, { title: this.state.title, image: this.state.imageURL, content: this.state.content })
+        axios.post(`api/posts/create`, { post_title: this.state.title, post_image: this.state.imageURL, post_content: this.state.content })
         .then( results => {
         })
         this.props.history.push('/Dashboard')
@@ -38,7 +38,7 @@ class Form extends Component {
          
         return(
             <div className='form'>  
-                {this.props.location.pathname !== '/' ? <Nav/> : ' '}
+                {this.props.location.pathname !== '/' ? <Nav tologin={()=> {this.props.history.push('/')}}/> : ' '}
                 <div className='newFormBox'>
                     <h2 className='newPostTitle'>New Post</h2>
                     <div className='inputFields'>

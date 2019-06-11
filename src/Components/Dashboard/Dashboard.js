@@ -55,7 +55,7 @@ handleInputChange= (e) => {
          
         return(
             <div className='dashboard'>  
-                    {this.props.location.pathname !== '/' ? <Nav/> : ' '}
+                    {this.props.location.pathname !== '/' ? <Nav tologin={()=> {this.props.history.push('/')}}/> : ' '}
                 <div className='mainSearchBox'>
                     <div className='searchButtonsBox'>
                         <input name='searchBox' value={this.state.searchBox} onChange={this.handleInputChange} type="text" placeholder='Search by Title' className='searchBox'/>

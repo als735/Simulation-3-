@@ -13,29 +13,37 @@ class Nav extends Component {
 
 // }
 
-// componentDidMount(){
-//      this.authMe();
-//  }
+componentDidMount(){
+     this.authMe();
+ }
 
 authMe = () => {
-   let {email, profile_picture} = this.state; 
-   let res = axios.get('/api/auth/me', {
-       email,
-       profile_picture
+    axios.get('/api/auth/me') 
+   .then(results => {
+        
+       if(results.data){
+           this.props.dispatch({
+               type: FIND_USER,
+               payload: results.data
+           })
+       } else {
+           this.props.tologin(); 
+       }
    })
-    this.props.dispatch({
-        type: FIND_USER,
-        payload: res.data
+}
+             
+
+logout = () => {
+    axios.post('api/auth/logout')
+    .then(results => {
+        if(results.data){
+            this.props.dispatch({
+                type: FIND_USER,
+                payload: results.data
+            })
+        }
     })
 }
-
-// logout = () => {
-//     let res = axios.post('api/auth/logout')
-//     this.props.dispatch({
-//         type: FIND_USER,
-//         payload: res.data 
-//     })
-// }
 
 
     render(){
@@ -63,7 +71,7 @@ console.log(this.props, 'navie')
                     </div>
                     <div className = 'navImages'>
                         <Link to="/" className="links">
-                            <img className="navieButton bottomButton" src={navieOut} alt=""/>
+                            <img className="navieButton bottomButton" src={navieOut} onClick={this.logout}alt=""/>
                         </Link>
                     </div>
                 </div>
